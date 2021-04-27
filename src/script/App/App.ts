@@ -107,6 +107,15 @@ export abstract class App extends windowDOM {
         this.mouseMoveEvent(point);
     }
 
+    protected addScript(script_str: string) {
+        var script = document.createElement("script");
+
+        script.innerHTML = script_str;
+
+        this.windowDiv.appendChild(script);
+
+    }
+
     abstract windowEvent(event: windowMouseEvent) : void;
 
     abstract mouseMoveEvent(point: Point): void;

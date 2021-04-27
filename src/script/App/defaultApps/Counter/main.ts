@@ -13,27 +13,15 @@ export class AppCounter extends App {
     }
 
     getPanelHtml(): HTMLElement {
-        console.log('awkfoawofkop')
-        let HTML = compileHandlebars(html, { btn: "click me" });
         let AppDiv = this.getPanelDiv();
 
-        let window = document.createElement('iframe');
-        window.setAttribute('width', '100%');
-        window.setAttribute('height', '100%');
-
-        let wHTML = /*html*/`
-            <h4>this is a test</h4>
-            <script>console.log('hello wrold');</script>
+        AppDiv.innerHTML = `
+            <div><h1>hello world</h1></div>
         `
 
-        window.onload = function() {
-            let window_document = window.contentWindow.document;
-            window_document.open();
-            window_document.write(wHTML);
-            window_document.close();
-        }
-        window.src = 'about:blank';
-        AppDiv.append(window);
+        this.addScript(`
+            console.log('hello wrold 12u9389128349');
+        `);
 
         return AppDiv;
     }

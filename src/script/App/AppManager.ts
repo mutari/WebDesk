@@ -10,7 +10,8 @@ export class AppManager {
     constructor() { 
         IO.startMouseMoveEvent((obj: Object) => {
             this.loopApps((app: any) => {
-                app.inMouseMoveEvent(obj);
+                if(app.render)
+                    app.inMouseMoveEvent(obj);
             })
         });
 
