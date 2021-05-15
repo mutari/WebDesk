@@ -1,5 +1,3 @@
-import * as Handlebars from './Handlebars';
-
 export function makeid(length: number) :string {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -30,9 +28,14 @@ export function appendToNavBar(doc: HTMLElement) {
     getNavBar().append(doc);
 }
 
-export function compileHandlebars(html: string, data: object): string {
-    // compile the template
-    var template = Handlebars.compile(html);
-    // execute the compiled template and print the output to the console
-    return template(data);
+export function getHead() {
+    return document.querySelector('head');
+}
+
+export function addHeadScript(src: string) {
+    var script = document.createElement('script');
+    
+    script.src = src;
+
+    getHead().appendChild(script);
 }

@@ -33,14 +33,14 @@ export abstract class App extends windowDOM {
         else if(event.toElement.id == `${this.app_id}-window-header`)
             this.inWindowEvent({ on: 'header',  x: event.x, y: event.y });
         else if(event.toElement.id == `${this.app_id}-navbar-icon-img` || event.toElement.id == `${this.app_id}-navbar-icon`)
-            this.render = !this.render;
+            this.toolbarEvent();
     }
 
     getWindowHtml() {
         //generating the window for the program
         this.windowDiv = document.createElement('div');
         this.windowDiv.setAttribute('class', 'window-main');
-        this.windowDiv.setAttribute('id', `app-${this.name}`);
+        this.windowDiv.setAttribute('id', `${this.app_id}`);
         this.windowDiv.style.top = `${this.point.y}px`;
         this.windowDiv.style.left = `${this.point.x}px`;
 
@@ -80,6 +80,16 @@ export abstract class App extends windowDOM {
         return mainDiv;
     }
 
+    private toolbarEvent() {
+        let app = this.getApp();
+        this.render = !this.render;
+        if(this.render)
+            app.style.display = "block";
+        else
+            app.style.display = "none";
+        
+    }
+
     abstract getPanelHtml() : HTMLElement;
 
     private inWindowEvent(event: windowMouseEvent) {
@@ -107,8 +117,19 @@ export abstract class App extends windowDOM {
         this.mouseMoveEvent(point);
     }
 
-    protected addScript(script_str: string) {
+    windowLoaded() {
+        // set upp window scripts
+        this.addScript(/*jsx*/`
+            console.log('script 2 loaded')
+            var window = getWindow('${this.app_id}')
+        `, true)
+
+        this.windowLoadedEvent();
+    }
+
+    protected addScript(script_str: string, defer: boolean = false) {
         var script = document.createElement("script");
+        script.defer = defer;
 
         script.innerHTML = script_str;
 
@@ -116,8 +137,22 @@ export abstract class App extends windowDOM {
 
     }
 
+    protected addScriptSrc(script_src: string) {
+        var script = document.createElement("script");
+
+        script.src = script_src;
+
+        this.windowDiv.appendChild(script);
+    }
+
+    private getApp() {
+        return document.querySelector<HTMLElement>(`#${this.app_id}`);
+    }
+
     abstract windowEvent(event: windowMouseEvent) : void;
 
     abstract mouseMoveEvent(point: Point): void;
+
+    abstract windowLoadedEvent(): void;
 
 }
