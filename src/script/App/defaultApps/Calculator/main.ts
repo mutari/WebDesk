@@ -2,10 +2,10 @@ import { App } from "../../App";
 import { windowMouseEvent } from "../../Events/windowMouseEvent";
 import { Point } from "../../../Tools/point";
 
-export class AppCounter extends App {
+export class AppCalculator extends App {
 
     constructor() {
-        super('Counter', 'http://www.iconarchive.com/download/i98291/dakirby309/simply-styled/File-Explorer.ico');
+        super('Calculator', 'http://www.iconarchive.com/download/i98291/dakirby309/simply-styled/File-Explorer.ico');
 
         this.render = true;
     }
@@ -15,9 +15,9 @@ export class AppCounter extends App {
 
         AppDiv.innerHTML = `
 
-            <div class="Counter">
+            <div class="Calculator">
                 <div id="example1">
-                    <h1>hello world</h1>
+                    <h1>Calculator</h1>
                     <p>count: 0</p>
                     <button onClick="test()">click me</button>
                 </div>
@@ -26,10 +26,10 @@ export class AppCounter extends App {
 
         this.addScript(/*jsx*/`
             
-            let number = 0;
+            let number2 = 0;
 
             function test() {
-                number++;
+                number2++;
                 app.querySelector('p').innerHTML = 'count: ' + number;
             }
             

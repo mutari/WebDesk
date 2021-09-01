@@ -1,6 +1,7 @@
 import { appendToDesktop, appendToNavBar, clearDesktop, addHeadScript } from "../Tools/Tools";
 import { App } from "./App";
 import { AppCounter } from "./defaultApps/Counter/main";
+import { AppCalculator } from "./defaultApps/Calculator/main";
 import { IO } from '../IO'
 
 export class AppManager {
@@ -18,7 +19,6 @@ export class AppManager {
         this.loadStandarProgram();
         this.generateNavBarHtml();
         this.renderWindow();
-        addHeadScript('/public/WebDeskWindow.js');
     }
 
     onClick(event: any) {
@@ -38,6 +38,7 @@ export class AppManager {
 
     loadStandarProgram() {
         this.Apps.push(new AppCounter());
+        this.Apps.push(new AppCalculator());
     }
 
     generateNavBarHtml() {

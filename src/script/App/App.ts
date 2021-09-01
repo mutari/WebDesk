@@ -121,7 +121,7 @@ export abstract class App extends windowDOM {
         // set upp window scripts
         this.addScript(/*jsx*/`
             console.log('script 2 loaded')
-            var window = getWindow('${this.app_id}')
+            app = getWindow('${this.app_id}')
         `, true)
 
         this.windowLoadedEvent();
