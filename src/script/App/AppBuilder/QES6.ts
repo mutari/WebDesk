@@ -9,7 +9,7 @@
  * @param args{string, HTMLElement}
  * @return {DOCObject}
  */
-function doc(...args) {
+function doc(...args: any[]) {
 
     if(typeof args[0] == "function") {
         document.addEventListener("DOMContentLoaded", () => {
@@ -19,17 +19,17 @@ function doc(...args) {
         args = [...args[0]]
     }
 
-    function getData(str, type) {
+    function getData(str?: string, type?: string) {
         if(str) {
-            doc(args).do(element => {
+            doc(args).do((element?: any) => {
                 if(type == 'text')
                     element.innerText = str;
                 else if(type == 'html')
                     element.innerHTML = str;
             })
         } else { // if no args is passed to the function
-            let outString = [];
-            doc(args).do(element => {
+            let outString: string[] = [];
+            doc(args).do((element?: any) => {
                 if(type == 'text')
                     outString.push(element.innerText);
                 else if(type == 'html')
@@ -53,12 +53,13 @@ function doc(...args) {
          * @param name{string} name of the dataset
          * @return {[string]|string} return dataset value
          */
-        dataset: (name) => {
-            doc(args).do(element => {
+        dataset: (name?: string) => {
+            let datasetValues: any[] = [];
+            doc(args).do((element?: any) => {
                 datasetValues = [];
                 datasetValues.push(element.dataset[name])
             })
-            if(attributes.length == 1)
+            if(datasetValues.length == 1)
                 return datasetValues[0];
             else
                 return datasetValues;
@@ -69,15 +70,15 @@ function doc(...args) {
          * @param tagName{string} tag name
          * @return {DOCObject}
          */
-        create: (tagName) => {
-             let newElement = document.createElement(tagName);
-             let elements = [];
-             doc(args).do(element => {
-                 let elementClone = newElement.cloneNode(true);
-                 element.append(elementClone);
-                 elements.push(elementClone);
-             });
-             return doc(elements);
+        create: (tagName?: any) => {
+            let newElement = document.createElement(tagName);
+            let elements: any[] = [];
+            doc(args).do((element?: any) => {
+                let elementClone = newElement.cloneNode(true);
+                element.append(elementClone);
+                elements.push(elementClone);
+            });
+            return doc(elements);
         },
 
         /**
@@ -85,7 +86,7 @@ function doc(...args) {
          * @param str{string}
          * @return {DOCObject}
          */
-        id: (str) => {
+        id: (str?: any) => {
             if(str)
                 return doc(args).attribute('id', str);
             else
@@ -100,14 +101,14 @@ function doc(...args) {
          * @param value{string} value of attribute
          * @return {DOCObject|[string]|string}
          */
-        attribute: (name, value) => {
+        attribute: (name?: any, value?: any) => {
             if(name && value) {
-                doc(args).do(element => {
+                doc(args).do((element?: any) => {
                     element.setAttribute(name, value);
                 });
             } else if(name) {
-                let outString = [];
-                doc(args).do(element => {
+                let outString: any[] = [];
+                doc(args).do((element?: any) => {
                     outString.push(element.getAttribute(name));
                 })
                 if(outString.length == 1)
@@ -115,8 +116,9 @@ function doc(...args) {
                 else
                     return outString;
             } else {
-                let outList = [];
-                doc(args).do(element => {
+                let outList: any[] = [];
+                let attributes = [];
+                doc(args).do((element?: any) => {
                     attributes = [];
                     for (var att, i = 0, atts = element.attributes, n = atts.length; i < n; i++) {
                         attributes.push({
@@ -143,7 +145,7 @@ function doc(...args) {
          * @param str{string} set text
          * @return {string|[string]|DOCObject}
          */
-        text: (str) => {
+        text: (str?: string) => {
             return getData(str, 'text');
         },
 
@@ -153,7 +155,7 @@ function doc(...args) {
          * @param str{string} set html
          * @return {string|[string]|DOCObject}
          */
-        html: (str) => {
+        html: (str?: string) => {
             return getData(str, 'html');
         },
 
@@ -163,14 +165,14 @@ function doc(...args) {
          * @param str{string} to set value to
          * @return {[string]|string|DOCObject}
          */
-        value: (str) => {
+        value: (str?: any) => {
             if(str !== undefined) {
-                doc(args).do(element => {
+                doc(args).do((element?: any) => {
                     element.value = str
                 })
             } else {
-                values = [];
-                doc(args).do(element => {
+                let values: any[] = [];
+                doc(args).do((element?: any) => {
                     values.push(element.value)
                 })
                 if(values.length == 1)
@@ -188,8 +190,8 @@ function doc(...args) {
 
     //region event handeles
 
-    function event(event, __callback) {
-        doc(args).do(element => {
+    function event(event?: string, __callback?: any) {
+        doc(args).do((element?: any) => {
             element.addEventListener(event, __callback);
         })
     }
@@ -201,11 +203,11 @@ function doc(...args) {
          * @param __callback{function} calls when a click occures
          * @return {DOCObject}
          */
-        click: (__callback) => {
+        click: (__callback?: any) => {
             if(__callback)
                 return event('click', __callback);
             else
-                doc(args).do(element => {
+                doc(args).do((element?: any) => {
                     element.click();
                 });
             return doc(args);
@@ -217,7 +219,7 @@ function doc(...args) {
          * @param __callback{function} get called when event occures
          * @return {DOCObject}
          */
-        event: (event, __callback) => {
+        event: (event?: any, __callback?: any) => {
             return event(event, __callback)
         }
 
@@ -235,15 +237,15 @@ function doc(...args) {
          * do something to every element in array
          * @param __callbacks{function}
          */
-        do: (__callbacks) => {
+        do: (__callbacks?: any) => {
             if(typeof args[0] == 'string') { // loop and query strings
-                args.forEach(elementStr => {
+                args.forEach((elementStr: any) => {
                     document.querySelectorAll(elementStr).forEach(element => {
                         __callbacks(element);
                     });
                 });
             } else { // loop elements
-                args.forEach(element => {
+                args.forEach((element: any) => {
                     __callbacks(element);
                 });
             }
@@ -269,9 +271,9 @@ function doc(...args) {
          * @param argsClass[]{string}
          * @return {DOCObject}
          */
-        addClass: (...argsClass) => {
+        addClass: (...argsClass: any[]) => {
             argsClass.forEach(value => {
-                doc(args).do(element => {
+                doc(args).do((element?: any) => {
                     element.classList.add(value)
                 })
             });
@@ -283,9 +285,9 @@ function doc(...args) {
          * @param argsClass[] {string}
          * @return {DOCObject}
          */
-        removeClass: (...argsClass) => {
+        removeClass: (...argsClass: any[]) => {
             argsClass.forEach(value => {
-                doc(args).do(element => {
+                doc(args).do((element?: any) => {
                     element.classList.remove(value)
                 })
             });
@@ -298,8 +300,8 @@ function doc(...args) {
          * @param toClass{string}
          * @return {DOCObject}
          */
-        switchClass: (orginClass, toClass) => {
-            doc(args).do(element => {
+        switchClass: (orginClass?: any, toClass?: any) => {
+            doc(args).do((element?: any) => {
                 element.classList.remove(orginClass);
                 element.classList.add(toClass);
             })

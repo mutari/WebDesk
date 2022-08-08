@@ -28,11 +28,11 @@ export abstract class App extends windowDOM {
     }
 
     onClick(event: any) {
-        if(event.toElement.id == `${this.app_id}-window-header` || event.toElement.id == `${this.app_id}-window-header-title`)
+        if(event.target.id == `${this.app_id}-window-header` || event.target.id == `${this.app_id}-window-header-title`)
             this.inWindowEvent({ on: 'header',  x: event.x, y: event.y });
-        else if(event.toElement.id == `${this.app_id}-window-header`)
+        else if(event.target.id == `${this.app_id}-window-header`)
             this.inWindowEvent({ on: 'header',  x: event.x, y: event.y });
-        else if(event.toElement.id == `${this.app_id}-navbar-icon-img` || event.toElement.id == `${this.app_id}-navbar-icon`)
+        else if(event.target.id == `${this.app_id}-navbar-icon-img` || event.target.id == `${this.app_id}-navbar-icon`)
             this.toolbarEvent();
     }
 
@@ -90,8 +90,6 @@ export abstract class App extends windowDOM {
         
     }
 
-    abstract getPanelHtml() : HTMLElement;
-
     private inWindowEvent(event: windowMouseEvent) {
 
         if(event.on == 'header') {
@@ -148,6 +146,8 @@ export abstract class App extends windowDOM {
     private getApp() {
         return document.querySelector<HTMLElement>(`#${this.app_id}`);
     }
+
+    abstract getPanelHtml() : HTMLElement;
 
     abstract windowEvent(event: windowMouseEvent) : void;
 
